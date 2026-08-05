@@ -1,0 +1,23 @@
+==============================================================================
+Is the count-based blind spot a transcript-length artefact?
+==============================================================================
+
+Gene-level counts obtained by summing transcript counts are biased when
+isoform usage shifts, because reads scale with effective length. The offset
+below is the isoform-usage-weighted mean transcript length per gene per
+sample, supplied to DESeq2 (normalizationFactors) and edgeR (offset).
+
+Genes analysed: 1389   switch-significant: 463
+Effective length varies across samples by a median factor of 1.82
+
+specification                                    blind spot
+DESeq2, summed counts (no offset)                6/463    1.3%
+DESeq2, tximport-style length offset             9/463    1.9%
+edgeR, summed counts (no offset)                 2/463    0.4%
+edgeR, tximport-style length offset              5/463    1.1%
+
+Interpretation:
+  The length offset changes the blind spot by less than 5 percentage points,
+  so the small count-based figures are not explained by length-driven read
+  inflation; the confound is real in principle but immaterial at this scale.
+  DESeq2 1.3% -> 1.9%; edgeR 0.4% -> 1.1%.

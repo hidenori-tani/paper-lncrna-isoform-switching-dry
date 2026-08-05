@@ -1,0 +1,29 @@
+================================================================
+Switch mechanism summary — structural basis of dominant-isoform switches
+================================================================
+
+Dominant-switch tissue pairs classified: 2,453  (0 skipped)
+Genes with >=1 dominant-switch pair:     268
+
+PAIR-LEVEL (n = 2453 pairs; flags are non-exclusive):
+  Alternative TSS / first exon (promoter):  2,346  (95.6%)
+  Splice-junction difference (any):         2,453  (100.0%)
+  Alternative TES / last exon (APA):        2,244  (91.5%)
+  Any terminal change (TSS or TES):         2,417  (98.5%)
+  Internal-splicing-only (no terminal chg): 36  (1.5%)
+  Alt-TSS-only (no splicing/TES change):    0  (0.0%)
+  >1 change co-occurring (multi):           2,417  (98.5%)
+
+PAIR-LEVEL mutually-exclusive category (priority TSS > splicing > TES):
+  alt_TSS:            2,346  (95.6%)
+  splice-junction (no alt-TSS): 107  (4.4%)
+  alt_TES:           0  (0.0%)
+  identical:         0  (0.0%)
+
+GENE-LEVEL (n = 268 genes with a dominant switch; >=1 pair involving):
+  Alternative TSS / first exon (promoter):  259  (96.6%)
+  Splice-junction difference (any):         268  (100.0%)
+  Alternative TES / last exon (APA):        245  (91.4%)
+
+Runtime: 0.2s
+================================================================

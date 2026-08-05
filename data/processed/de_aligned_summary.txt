@@ -1,0 +1,41 @@
+==============================================================================
+Aligning the DE contrast to the switching contrast
+==============================================================================
+
+lnc-ISI is the MAXIMUM pairwise JSD, so the switch is defined on one tissue
+pair. The omnibus DE test asks a different question (any difference across all
+valid tissues). Here DE is restricted to each gene's own argmax-JSD pair.
+
+Switch-significant genes with an argmax pair: 463
+Distinct tissue pairs tested: 36
+
+DE specification                                   blind spot
+omnibus rank test on TPM (headline)               71/463   15.3%
+omnibus DESeq2 (all valid tissues)                 6/463    1.3%
+omnibus edgeR (all valid tissues)                  2/463    0.4%
+ALIGNED DESeq2 (argmax-JSD pair only)            185/463   40.0%
+ALIGNED edgeR  (argmax-JSD pair only)            190/463   41.0%
+
+
+Same gene universe (genes that have an alternative pair), aligned vs random:
+  aligned pair (DESeq2)                          168/416   40.4%
+  random  pair (DESeq2)                          211/416   50.7%
+  aligned pair (edgeR)                           175/416   42.1%
+  random  pair (edgeR)                           216/416   51.9%
+
+Strict per-gene N match (n_aligned == n_random), n = 371 genes:
+  aligned pair (DESeq2)                          142/371   38.3%
+  random  pair (DESeq2)                          187/371   50.4%
+
+Multiplicity sensitivity (reviewer: 36 separate BH families vs one):
+  aligned DESeq2, single BH family of 463        181/463   39.1%
+
+Interpretation:
+  Aligning the contrast substantially enlarges the blind spot: the omnibus
+  design was masking switches by crediting differences elsewhere in the panel.
+  The omnibus figures understate the blind spot and must be reported as such.
+
+  Matched-N control: a RANDOM valid tissue pair uses the same number of
+  samples and the same models as the aligned test, so the difference between
+  aligned (40.0%) and random (50.7%) isolates contrast alignment from
+  sample size; the gap from the omnibus test reflects both.

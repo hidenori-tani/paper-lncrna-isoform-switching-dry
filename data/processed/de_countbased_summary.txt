@@ -1,0 +1,34 @@
+==================================================================
+Count-based DE robustness of the silent fraction (long-read)
+==================================================================
+
+Analyzed genes:              1389
+Switch-significant genes:    463 (unchanged; switching test not re-run)
+Samples / tissues:           68 / 9
+Technical replicates:        13 (_rep) collapsed in sensitivity
+
+Silent fraction among switch-significant genes, by gene-DE method:
+  Kruskal-Wallis on TPM (headline):        71/463 = 15.3%
+  DESeq2 LRT, native norm (primary):       6/463 = 1.3%
+  edgeR QL ANODEV, native norm (primary):  2/463 = 0.4%
+  DESeq2, replicates collapsed (native):   7/463 = 1.5%
+  DESeq2, whole-library norm (sensitivity):9/463 = 1.9%
+  edgeR, whole-library norm (sensitivity): 4/463 = 0.9%
+
+Gene-DE call concordance (Cohen's kappa over analyzed genes):
+  KW vs DESeq2:   kappa = 0.036
+  KW vs edgeR:    kappa = 0.027
+  DESeq2 vs edgeR: kappa = 0.855
+
+Silent-set overlap KW vs DESeq2 (Jaccard): 0.041
+  KW-silent n=71, DESeq2-silent n=6, shared n=3
+
+n gene-DE (KW):     986
+n gene-DE (DESeq2): 1366
+n gene-DE (edgeR):  1370
+
+Normalization: PRIMARY = each method's native composition-aware norm
+(DESeq2 median-of-ratios/poscounts; edgeR TMM). SENSITIVITY = whole-library
+size factors (matched to the TPM used by the KW test). The silent fraction
+is essentially unchanged between the two, so it is robust to normalization.
+==================================================================

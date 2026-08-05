@@ -26,6 +26,8 @@ from typing import Dict, List, Tuple
 
 import matplotlib
 matplotlib.use("Agg")
+matplotlib.rcParams["pdf.fonttype"] = 42   # TrueType, not Type 3 (publisher requirement)
+matplotlib.rcParams["ps.fonttype"] = 42
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import matplotlib.gridspec as gridspec
@@ -306,14 +308,18 @@ def make_fig1(vis_lr: pd.DataFrame):
                 color=CBLIND["orange"], label="Isoform β")
     ax_bbot.set_xticks(x)
     ax_bbot.set_xticklabels(tissues_toy, fontsize=6.5)
-    ax_bbot.set_ylim(0, 1.15)
+    ax_bbot.set_ylim(0, 1.28)
     ax_bbot.set_ylabel("Isoform fraction", fontsize=7)
     ax_bbot.spines["right"].set_visible(False)
     ax_bbot.spines["top"].set_visible(False)
     ax_bbot.tick_params(labelsize=6)
-    ax_bbot.legend(loc="upper right", fontsize=6, frameon=False)
-    ax_bbot.text(0.99, 0.88, "SWITCHING → sig.", transform=ax_bbot.transAxes,
-                 ha="right", fontsize=6.5, color=CBLIND["red"], style="italic")
+    # Legend at upper-left, annotation at upper-right — opposite corners, both on
+    # white backgrounds so they stay legible over the stacked bars and never collide.
+    ax_bbot.legend(loc="upper left", fontsize=6, frameon=True,
+                   facecolor="white", framealpha=0.9, edgecolor="none")
+    ax_bbot.text(0.99, 0.97, "SWITCHING → sig.", transform=ax_bbot.transAxes,
+                 ha="right", va="top", fontsize=6.5, color=CBLIND["red"], style="italic",
+                 bbox=dict(boxstyle="round,pad=0.15", fc="white", ec="none", alpha=0.9))
 
     # ── Panel C: lnc-ISI definition box ────────────────────────────────────────
     ax_c = fig.add_subplot(gs[2])
@@ -473,8 +479,11 @@ def make_fig3(vis_lr: pd.DataFrame):
     ax_a.set_xticks([])
     ax_a.set_ylabel("Number of genes", fontsize=8)
     ax_a.set_title(f"Visibility classification\n(n={n_total} genes)", fontsize=8)
-    ax_a.legend(fontsize=7, frameon=False, loc="upper left",
-                bbox_to_anchor=(1.02, 1.0))
+    # Legend below panel A (A has no x-ticks) as a 2×2 block, so it never protrudes
+    # into panel B's headline annotation.
+    ax_a.legend(fontsize=6.5, frameon=False, loc="upper center",
+                bbox_to_anchor=(0.5, -0.02), ncol=2, columnspacing=1.2,
+                handletextpad=0.4)
     ax_a.set_ylim(0, n_total * 1.05)
 
     # Panel B: bar showing silent fraction among switch-sig genes
@@ -638,46 +647,48 @@ def make_fig4(vis_lr: pd.DataFrame, vis_sr: pd.DataFrame):
         ax.text(x, y, text, ha="center", va="center", fontsize=fontsize,
                 fontweight="bold", color="white" if color not in (CBLIND["light"],) else "black")
 
-    ax_c.set_xlim(0, 4)
+    # Wide x-range so the three bottom boxes are spaced with clear gaps and no box
+    # (or its text) overlaps a neighbour.
+    ax_c.set_xlim(0, 4.4)
     ax_c.set_ylim(-0.2, 3.2)
 
     # Top box: long-read silent genes analysable in short-read
-    _box(ax_c, 2.0, 2.8, 2.6, 0.5,
-         f"{n_base} long-read silent genes\n(analyzable in short-read)",
-         CBLIND["red"])
+    _box(ax_c, 2.2, 2.8, 2.9, 0.55,
+         f"{n_base} long-read silent genes\n(testable in short-read)",
+         CBLIND["red"], fontsize=6.5)
 
-    # Arrow down to two branches
-    ax_c.annotate("", xy=(0.8, 2.0), xytext=(2.0, 2.55),
+    # Arrows down to the switch-sig junction (left) and the not-sw-sig box (right)
+    ax_c.annotate("", xy=(1.2, 2.05), xytext=(2.0, 2.52),
                   arrowprops=dict(arrowstyle="-|>", color="black", lw=0.8))
-    ax_c.annotate("", xy=(3.2, 2.0), xytext=(2.0, 2.55),
+    ax_c.annotate("", xy=(3.75, 2.05), xytext=(2.4, 2.52),
                   arrowprops=dict(arrowstyle="-|>", color="black", lw=0.8))
 
-    ax_c.text(1.05, 2.3, f"{n_switch_sig_sr}/{n_base}\nswitch-sig", ha="center", fontsize=6.5)
-    ax_c.text(3.0, 2.3,  f"{n_not_sw}/{n_base}\nnot sw-sig", ha="center", fontsize=6.5)
+    ax_c.text(1.0, 2.34, f"{n_switch_sig_sr}/{n_base} switch-sig", ha="center", fontsize=6)
+    ax_c.text(3.6, 2.34, f"{n_not_sw}/{n_base} not sw-sig", ha="center", fontsize=6)
 
-    # Two sub-boxes for switch-sig branch
-    _box(ax_c, 0.8, 1.55, 1.3, 0.5,
+    # Two sub-boxes for the switch-sig branch
+    _box(ax_c, 0.8, 1.5, 1.25, 0.55,
          f"{n_silent_sr} remain\nsilent ({n_silent_sr/n_base*100:.0f}%)",
-         CBLIND["red"])
-    _box(ax_c, 2.2, 1.55, 1.4, 0.5,
+         CBLIND["red"], fontsize=6.5)
+    _box(ax_c, 2.25, 1.5, 1.5, 0.55,
          f"{n_visible_sr} become\nvisible ({n_visible_sr/n_base*100:.0f}%)",
-         CBLIND["blue"])
+         CBLIND["blue"], fontsize=6.5)
 
-    # Arrow splitting switch-sig
-    ax_c.annotate("", xy=(0.8, 1.80), xytext=(0.8, 2.00),
+    # Arrows splitting the switch-sig junction (x = 1.2)
+    ax_c.annotate("", xy=(0.8, 1.78), xytext=(1.2, 2.0),
                   arrowprops=dict(arrowstyle="-|>", color="black", lw=0.8))
-    ax_c.annotate("", xy=(2.2, 1.80), xytext=(0.8, 2.00),
+    ax_c.annotate("", xy=(2.25, 1.78), xytext=(1.2, 2.0),
                   arrowprops=dict(arrowstyle="-|>", color="black", lw=0.8))
 
     # Not-sw-sig box
-    _box(ax_c, 3.2, 1.55, 1.3, 0.5,
+    _box(ax_c, 3.75, 1.5, 1.25, 0.55,
          f"{n_not_sw} not\nswitch-sig",
-         CBLIND["gray"])
+         CBLIND["gray"], fontsize=6.5)
 
     # Caption note
-    ax_c.text(2.0, 0.7,
+    ax_c.text(2.2, 0.65,
               "↑ Silent classification is power-dependent:\nmore samples → visible or not detected",
-              ha="center", va="center", fontsize=6.5, style="italic",
+              ha="center", va="center", fontsize=6, style="italic",
               color="#444444")
 
     _save_fig(fig, "Fig4")
@@ -868,7 +879,9 @@ def make_fig6(case_data: Dict):
         ax.set_ylabel("Mean isoform fraction", fontsize=7.5)
         ax.set_title(f"{gene_name}  (lnc-ISI = {d.get('isi', '—'):.3f})", fontsize=9)
 
-        ax.text(-0.06, 1.07, plbl, transform=ax.transAxes, **PANEL_FONT)
+        # Panel letter above the TPM inset (which sits at y≈1.04–1.42), clear of the
+        # inset's left-hand "Gene TPM (mean)" axis title.
+        ax.text(-0.085, 1.47, plbl, transform=ax.transAxes, **PANEL_FONT)
 
         # Compact legend for isoforms
         handles, labels = ax.get_legend_handles_labels()

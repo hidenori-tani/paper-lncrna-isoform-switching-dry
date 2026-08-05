@@ -18,6 +18,16 @@ else
     echo "Already exists: $GENCODE_TPM"
 fi
 
+# Long-read GENCODE raw counts (for count-based DE: DESeq2 / edgeR robustness) ─
+GENCODE_COUNTS="data/raw/longread/quantification_gencode.counts.txt.gz"
+if [ ! -f "$GENCODE_COUNTS" ]; then
+    echo "Downloading $GENCODE_COUNTS ..."
+    curl -L -o "$GENCODE_COUNTS" \
+        "https://storage.googleapis.com/adult-gtex/long-read-data/v9/long-read-RNA-seq/quantification_gencode.counts.txt.gz"
+else
+    echo "Already exists: $GENCODE_COUNTS"
+fi
+
 # Optional – FLAIR novel+known isoforms (sensitivity analysis, larger file)
 FLAIR_TPM="data/raw/longread/quantification_flair_filter.tpm.txt.gz"
 if [ ! -f "$FLAIR_TPM" ]; then
@@ -71,6 +81,32 @@ if [ ! -f "$LNCRNA_GTF" ]; then
         "https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_26/gencode.v26.long_noncoding_RNAs.gtf.gz"
 else
     echo "Already exists: $LNCRNA_GTF"
+fi
+
+# ── GENCODE v26 lncRNA transcript FASTA (for run_rbp.py) ─────────────────────
+
+LNCRNA_FASTA="data/raw/gencode.v26.lncRNA_transcripts.fa.gz"
+if [ ! -f "$LNCRNA_FASTA" ]; then
+    echo "Downloading $LNCRNA_FASTA ..."
+    curl -L -o "$LNCRNA_FASTA" \
+        "https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_26/gencode.v26.lncRNA_transcripts.fa.gz"
+else
+    echo "Already exists: $LNCRNA_FASTA"
+fi
+
+# ── GTEx v8 short-read transcript TPM (replication; subset_shortread.py) ──────
+# NOTE: large file (~3.6 GB). Required only for the short-read replication /
+# power-curve analyses (run_replication.py, run_power_curve.py via
+# subset_shortread.py). The long-read mechanism/landscape analyses do NOT need it.
+
+mkdir -p data/raw/shortread
+SHORTREAD_TPM="data/raw/shortread/GTEx_v8_transcript_tpm.gct.gz"
+if [ ! -f "$SHORTREAD_TPM" ]; then
+    echo "Downloading $SHORTREAD_TPM (~3.6 GB) ..."
+    curl -L -o "$SHORTREAD_TPM" \
+        "https://storage.googleapis.com/adult-gtex/bulk-gex/v8/rna-seq/GTEx_Analysis_2017-06-05_v8_RSEMv1.3.0_transcript_tpm.gct.gz"
+else
+    echo "Already exists: $SHORTREAD_TPM"
 fi
 
 echo ""

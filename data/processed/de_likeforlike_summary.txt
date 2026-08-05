@@ -1,0 +1,23 @@
+==============================================================================
+Separating the DE model from the DE input
+==============================================================================
+
+Switching calls, gene set, samples and tissues are identical in every row;
+only the input scale and/or the statistical model change.
+
+DE specification                            genes DE     blind spot
+rank test on TPM (headline)                      986    71/463   15.3%
+rank test on TMM-CPM (like-for-like)             949    80/463   17.3%
+DESeq2 LRT on raw counts                        1366     6/463    1.3%
+edgeR QL on raw counts                          1370     2/463    0.4%
+
+Blind-spot set overlap (Jaccard):
+  rank-TPM vs rank-TMM-CPM : 0.480  (shared 49)
+  rank-TMM-CPM vs DESeq2   : 0.062  (shared 5)
+  rank-TPM vs DESeq2       : 0.041  (shared 3)
+
+Interpretation:
+  The rank test keeps a large blind spot even when fed the SAME TMM-normalised
+  counts the NB models use, so the spread is driven by the statistical model
+  (power), not by the TPM input scale.
+  rank/TPM 15.3%  ->  rank/TMM-CPM 17.3%  ->  DESeq2 1.3%

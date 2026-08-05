@@ -63,6 +63,21 @@ def load_longread_tpm(tpm_gz_path: str) -> pd.DataFrame:
     return df
 
 
+def load_longread_counts(counts_gz_path: str) -> pd.DataFrame:
+    """Load FLAIR / GENCODE long-read raw-count table.
+
+    Same layout as the TPM file (transcript_id in column 0, sample IDs as
+    columns) but integer read counts.  Returns an int64 DataFrame suitable for
+    DESeq2 / edgeR.
+    """
+    open_fn = gzip.open if str(counts_gz_path).endswith('.gz') else open
+    with open_fn(counts_gz_path, 'rt') as fh:
+        df = pd.read_csv(fh, sep='\t', index_col=0, low_memory=False)
+    df = df.round().astype('int64')
+    df.index.name = 'transcript_id'
+    return df
+
+
 # ── Sample → tissue mapping ───────────────────────────────────────────────────
 
 def _strip_sm(sampid: str) -> str:

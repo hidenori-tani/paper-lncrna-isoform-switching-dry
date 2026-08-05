@@ -1,0 +1,20 @@
+============================================================
+Phase 3 Step 1 Summary — Dominant Isoform Switch & Differential Exons
+============================================================
+
+Switch-significant genes processed:          463
+Genes with >= 1 dominant-switch tissue pair: 268
+Total dominant-switch tissue pairs:          2,453
+
+Differential exonic bp distribution (per pair):
+  Median diff_bp:     1,738
+  90th pct diff_bp:   4,644
+
+Total differential exon regions (BED):       11,939
+
+Analysis parameters:
+  MIN_SAMPLE_GENE_TPM:         1.0
+  MIN_EXPR_SAMPLES_PER_TISSUE: 3
+  Total runtime:               2.0s
+
+============================================================

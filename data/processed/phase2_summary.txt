@@ -1,0 +1,46 @@
+============================================================
+Phase 2 Summary — lncRNA Isoform Switching Landscape
+============================================================
+
+Input data:
+  Long-read samples used:      68
+  Tissues used:                9
+  Tissues: Brain - Cerebellar Hemisphere, Brain - Frontal Cortex (BA9), Brain - Putamen (basal ganglia), Cells - Cultured fibroblasts, Heart - Atrial Appendage, Heart - Left Ventricle, Liver, Lung, Muscle - Skeletal
+
+lncRNA genes analyzed:
+  (>= 2 isoforms in data, >= 2 valid tissues)
+  n = 1,389
+
+Visibility classification counts:
+  silent    (switch-sig, not DE):  71
+  visible   (switch-sig AND DE):   392
+  gene_only (DE only):             594
+  none      (neither):             332
+
+KEY HEADLINE NUMBERS:
+  Switch-significant genes:    463
+  Silent fraction among switch-sig genes
+    (silent / (silent+visible)):  71/463 = 0.153
+  Switch-sig fraction among non-DE genes
+    (silent / (silent+none)):     71/403 = 0.1762
+
+SENSITIVITY (small_perm = n_expr < 10):
+  Genes with small_perm=True:  115
+  Silent count (excl. small_perm): 69
+  Silent fraction (excl. small_perm)
+    (silent / (silent+visible)):  69/459 = 0.150
+
+lnc-ISI distribution (all analyzed genes):
+  Median ISI:                  0.0787
+  90th percentile ISI:         0.3330
+  n(ISI >= 0.10):              600
+  n(ISI >= 0.25):              228
+
+Analysis parameters:
+  MIN_SAMPLE_GENE_TPM:         1.0
+  MIN_EXPR_SAMPLES_PER_TISSUE: 3
+  Permutations (B):            10000
+  Permutation test runtime:    56.6s
+  Total runtime:               59.2s
+
+============================================================
