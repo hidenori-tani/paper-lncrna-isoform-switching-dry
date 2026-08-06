@@ -909,9 +909,15 @@ def make_fig6(case_data: Dict):
         ax_ins.spines["top"].set_visible(False)
 
         cv = np.std(mean_tpm) / (np.mean(mean_tpm) + 1e-9)
-        ax_ins.text(0.98, 0.88, f"CV={cv:.2f} (gene DE=False)",
-                    transform=ax_ins.transAxes, ha="right", fontsize=5.5,
-                    style="italic", color=CBLIND["green"])
+        # ABOVE the inset, not inside it. At y = 0.88 the annotation sat in the
+        # data area, and for LINC01572 -- whose total TPM rises steeply in the
+        # last tissue -- the green line ran straight through it, so the proof of
+        # 2026-08-06 printed "CV=0.?4": the digit was unreadable. Any position
+        # inside the axes can be crossed by some gene's curve, so the fix is to
+        # leave the data area entirely rather than to move it within.
+        ax_ins.text(0.98, 1.06, f"CV={cv:.2f} (gene DE=False)",
+                    transform=ax_ins.transAxes, ha="right", va="bottom",
+                    fontsize=5.5, style="italic", color=CBLIND["green"])
 
     _save_fig(fig, "Fig6")
 
