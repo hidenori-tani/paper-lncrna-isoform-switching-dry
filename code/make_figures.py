@@ -257,9 +257,16 @@ def make_fig1(vis_lr: pd.DataFrame):
             ax_a.text(col + 0.5, row + 0.30, sub,
                       ha="center", va="center", fontsize=6.5, color="white")
 
-    # Axis labels
-    ax_a.text(1.0, -0.15, "Gene-level DE", ha="center", va="top", fontsize=7.5)
-    ax_a.text(-0.18, 0.5, "Isoform\nswitching sig.", ha="right", va="center",
+    # Axis labels.
+    # These sit outside the data limits on purpose; text is not clipped and
+    # savefig(bbox_inches="tight") grows the canvas to include them. The offsets
+    # are set from measured bounding boxes, not by eye: the tick labels reach
+    # y = -0.19 below the grid and x = -0.52 to its left, so the axis labels must
+    # start beyond those. An earlier version placed the y-axis label at y = 0.5,
+    # the centre of the bottom row rather than of the grid, so it printed through
+    # the "not sig." tick label; code/check_figure_layout.py now measures this.
+    ax_a.text(1.0, -0.26, "Gene-level DE", ha="center", va="top", fontsize=7.5)
+    ax_a.text(-0.78, 1.0, "Isoform\nswitching sig.", ha="center", va="center",
               fontsize=7.5, rotation=90)
     # Not / Yes ticks
     for i, lbl in enumerate(["not sig.", "sig."]):
