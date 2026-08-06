@@ -1,6 +1,6 @@
 # The gene-level blind spot in lncRNA isoform switching
 
-Analysis code for **"The gene-level blind spot in lncRNA isoform switching is set by differential-expression test power, not by biology"** (Hidenori Tani).
+Analysis code for **"The reported gene-level blind spot in lncRNA isoform switching is specification-dependent"** (Hidenori Tani).
 
 Transcriptomic studies routinely report a class of genes whose isoform composition changes across
 conditions while their total expression does not — the differential-transcript-usage-positive,
@@ -119,8 +119,8 @@ the count-based differential-expression step. Tested on macOS.
 
 ## Citation
 
-Tani H. *The gene-level blind spot in lncRNA isoform switching is set by differential-expression
-test power, not by biology.* (manuscript; citation to be updated on publication).
+Tani H. *The reported gene-level blind spot in lncRNA isoform switching is
+specification-dependent.* (manuscript; citation to be updated on publication).
 
 ## Licence
 
